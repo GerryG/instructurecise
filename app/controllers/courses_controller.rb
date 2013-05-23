@@ -86,4 +86,14 @@ class CoursesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def register
+    @course = Course.find(params[:id])
+    @student = params[:name]
+
+    respond_to do |format|
+      format.html { render action: "register" }
+      format.json { render json: @course.errors, status: :unprocessable_entity }
+    end
+  end
 end
