@@ -1,0 +1,32 @@
+
+Explored different options, and then went back to rails. (about an hour)
+
+Started looking deeper at my original attempt in rails and started realizing that there was maybe a bug in ActiveResource, or
+at least in the version I was using (3.2.13).
+Figured out that it was a remove root issue after trying a number of workarounds.  It was incorectly removing the 'token' that
+is actually the attribute name, thinking it was the model name (they are the same).  Tried to see if decoding would also
+respond to the attribute for formatting it withou the root.  No go.
+Found: https://github.com/rails/rails/pull/2692 and monkey patched my activeresouce locally. (about an hour total)
+Success, it fetched the token, not to finish the API access.
+
+Added module to add the access_token to the parameters, and generated a courses model with the fields (about 30 minutes
+ (over a longer period interupted))
+
+Seached for any ready code or technique to handle the Link: header, then wrote the code to try to pull it from the header.
+Could not find the Link: header (using Chrome dev tools) (10 minutes)
+
+Regenerated courses model to make dates strings (rather than figure out parsing dates properly right now), and accidentally
+over-wrote the Link header parsing I had.  Shortly after, I realized I wasn't looking at the headers from the remote request,
+but only on the response to the first request to my application. (another 10 or so minutes)
+
+Looked into how to get at the second level response headers
+This: http://stackoverflow.com/questions/5972429/active-resource-responses-how-to-get-them seemed to have the right stuff
+for what is needed.  It really surprised me that it was this hard to get at the Link headers, but there doesn't seem to be
+another way. (went to bed happy that I was pretty sure I had a solution, and watching the end of Kojack.  Not sure of exactly
+how much time I actually spend doing this while winding down).
+
+Got the rest of it working in a basic way.  Had a detour before I realized the Link header would naturally have locations
+at the api and I'd have to present links that worked through the app.  Figured out how to pass the parameters through from
+the app to api and not break the auth-token part.  (probably about 30 minutes, but pretty broken up, so hard to say)
+
+
